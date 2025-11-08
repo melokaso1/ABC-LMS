@@ -1,0 +1,291 @@
+/* Variables principales */
+:root {
+    --primary-color: #00ffc8;
+    --secondary-color: #ff2efc;
+    --background-dark: #181826;
+    --surface-card: #24243a;
+    --accent-hacker: #16f7ff;
+    --text-primary: #e8e8e8;
+    --text-secondary: #c2c2e0;
+    --danger-color: #ff4381;
+    --success-color: #3affc3;
+    --shadow-color: 0 0 20px #00ffc899;
+    --transition-fast: 0.15s cubic-bezier(0.86,0,0.07,1);
+    --font-main: 'Fira Mono', 'Consolas', monospace;
+}
+
+/* Estilo general del body */
+body {
+    background: var(--background-dark);
+    color: var(--text-primary);
+    font-family: var(--font-main);
+    letter-spacing: 0.05em;
+    min-height: 100vh;
+    margin: 0;
+}
+
+/* Títulos */
+h1, h2, h3, h4 {
+    color: var(--primary-color);
+    font-family: inherit;
+    text-shadow: 0 0 8px var(--primary-color);
+    margin-bottom: 0.5em;
+}
+
+/* Enlaces */
+a {
+    color: var(--accent-hacker);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--secondary-color);
+    text-shadow: 0 0 6px var(--secondary-color);
+}
+
+/* Botón base */
+.btn {
+    background: linear-gradient(90deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: #181826;
+    border: none;
+    padding: 0.9em 2em;
+    border-radius: 16px;
+    font-family: inherit;
+    font-weight: bold;
+    letter-spacing: 0.07em;
+    font-size: 1em;
+    margin: .4em 0;
+    cursor: pointer;
+    box-shadow: var(--shadow-color);
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: background var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
+}
+
+/* Efecto glitch del botón */
+.btn::before {
+    content: '';
+    position: absolute;
+    left: -50%;
+    top: -50%;
+    width: 200%;
+    height: 200%;
+    background: repeating-linear-gradient(135deg,transparent, transparent 16px, #fff1 20px, transparent 24px);
+    opacity: 0.18;
+    animation: btn-glitch 2s linear infinite;
+    z-index: -1;
+}
+
+@keyframes btn-glitch {
+    0% { transform: translate(0,0);}
+    20% { transform: translate(4px, -2px);}
+    40% { transform: translate(-4px, 5px);}
+    60% { transform: translate(3px, 3px);}
+    80% { transform: translate(-3px, -5px);}
+    100% { transform: translate(0,0);}
+}
+
+/* Botón hover */
+.btn:hover {
+    transform: scale(1.06) skew(-3deg, 1deg);
+    background: linear-gradient(90deg, var(--secondary-color) 0%, var(--primary-color) 100%);
+    box-shadow: 0 0 36px 5px var(--secondary-color);
+    color: #06082b;
+}
+
+/* Input base */
+.input {
+    background: #151622;
+    border: 1.5px solid var(--accent-hacker);
+    color: var(--text-primary);
+    padding: 0.7em 1.1em;
+    border-radius: 9px;
+    font-family: inherit;
+    font-size: 1em;
+    margin: .2em 0 1em 0;
+    box-shadow: 0 0 8px var(--accent-hacker), 0 1px 1px #1112;
+    transition: border var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+/* Input enfocado */
+.input:focus {
+    outline: none;
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 18px var(--secondary-color), 0 2px 2px #1115;
+    background: #1a1b2d;
+}
+
+/* Card base */
+.card {
+    background: var(--surface-card);
+    border-radius: 18px;
+    box-shadow: 0 0 24px var(--primary-color), 0 2px 6px #0005;
+    padding: 2em 1.8em;
+    margin: 2em auto;
+    max-width: 480px;
+    position: relative;
+    overflow: hidden;
+    border: 1.5px solid var(--primary-color);
+    transition: box-shadow var(--transition-fast), border-color var(--transition-fast);
+    animation: glow-card 2.5s alternate-reverse infinite;
+}
+
+@keyframes glow-card {
+    0% { box-shadow: 0 0 24px var(--primary-color);}
+    60% { box-shadow: 0 0 24px var(--secondary-color);}
+    100% { box-shadow: 0 0 40px var(--accent-hacker);}
+}
+
+/* Tabla base */
+.table {
+    width: 100%;
+    background: #151622;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 0 10px var(--accent-hacker);
+    margin-bottom: 2em;
+}
+
+.table th, .table td {
+    padding: .8em 1em;
+    border-bottom: 1px solid #23243a;
+    color: var(--text-primary);
+    text-align: left;
+}
+
+.table th {
+    background: linear-gradient(90deg, #22233a 70%, var(--primary-color) 110%);
+    color: var(--primary-color);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    font-size: 1.01em;
+    text-shadow: 0 0 4px var(--primary-color);
+}
+
+.table tr:nth-child(even) td {
+    background: #181926;
+}
+
+.table tr:hover td {
+    background: #202145;
+    color: var(--secondary-color);
+    transition: background var(--transition-fast), color var(--transition-fast);
+}
+
+/* Vistas ocultas/activas */
+.view-hidden {
+    display: none !important;
+}
+
+.view-active {
+    display: block !important;
+    animation: viewAppear 0.6s cubic-bezier(0.86,0,0.07,1);
+}
+
+@keyframes viewAppear {
+    0% { transform: scale(0.96) translateY(20px); opacity: 0; }
+    100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 10px;
+    background: #181826;
+}
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+    border-radius: 8px;
+}
+
+/* Estados de error y éxito en inputs */
+.input:invalid, .has-error {
+    border-color: var(--danger-color) !important;
+    box-shadow: 0 0 8px var(--danger-color) !important;
+}
+
+.input:valid, .has-success {
+    border-color: var(--success-color) !important;
+    box-shadow: 0 0 6px var(--success-color) !important;
+}
+
+/* Keyframes de parpadeo digital */
+@keyframes cyberflicker {
+    0%,100% { opacity: 0.99;}
+    6% { opacity: 0.12;}
+    11% { opacity: 0.6;}
+    14% { opacity: 0.34;}
+    20% { opacity: 0.78;}
+    23% { opacity: 0.43;}
+    31% { opacity: 1;}
+    41% { opacity: 0.37;}
+    53% { opacity: 0.9;}
+    67% { opacity: 0.97;}
+    74% { opacity: 0.44;}
+    87% { opacity: 0.85;}
+}
+
+/* Texto con resplandor digital */
+.glow-text {
+    color: var(--primary-color);
+    text-shadow: 0 0 12px var(--primary-color), 0 0 18px var(--accent-hacker), 0 0 8px #fff3;
+    animation: cyberflicker 1.7s infinite;
+}
+
+/* Efecto glitch en texto */
+.glitch {
+    position: relative;
+    color: var(--secondary-color);
+    text-shadow: 2px 0 var(--primary-color), -2px 0 var(--accent-hacker), 0 2px var(--danger-color), 0 -2px var(--success-color);
+    animation: cyberflicker 1.8s infinite;
+    font-weight: 700;
+    font-family: var(--font-main);
+}
+
+/* Responsive para tablet */
+@media (max-width: 768px) {
+    .card {
+        max-width: 99%;
+        padding: 1.3em .7em;
+        margin: 1.2em .3em;
+    }
+    .table th, .table td {
+        padding: .6em .6em;
+        font-size: 0.98em;
+    }
+}
+
+/* Responsive para celulares medianos */
+@media (max-width: 500px) {
+    .card, .table {
+        font-size: 0.97em;
+        box-shadow: 0 0 12px var(--primary-color);
+    }
+    h1 {
+        font-size: 1.6em;
+    }
+    .btn {
+        padding: 0.7em 1.1em;
+        font-size: 0.97em;
+    }
+}
+
+/* Responsive para celulares pequeños */
+@media (max-width: 420px) {
+    body {
+        font-size: 0.98em;
+    }
+    .card {
+        padding: .7em .2em;
+    }
+}
+
+/* Línea decorativa */
+hr {
+    border: none;
+    border-top: 2px dashed var(--secondary-color);
+    filter: drop-shadow(0 0 6px var(--secondary-color));
+    margin: 2em 0;
+}
