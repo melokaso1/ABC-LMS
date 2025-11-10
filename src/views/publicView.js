@@ -1,4 +1,5 @@
 import { renderCursosAcordeon } from "../components/cursos.js";
+import { renderDocentesPublic } from "../components/docentes.js";
 
 class PublicView extends HTMLElement {
   constructor() {
@@ -43,6 +44,15 @@ class PublicView extends HTMLElement {
             <div id="public-cursos-acordeon" class="cursos-terminal-container"></div>
           </div>
           
+          <div class="docentes-section">
+            <h2 class="section-title-terminal">
+              <span class="terminal-bracket">[</span>
+              NUESTROS DOCENTES
+              <span class="terminal-bracket">]</span>
+            </h2>
+            <div id="public-docentes-container" class="docentes-terminal-container"></div>
+          </div>
+          
           <div class="terminal-footer">
             <div class="terminal-command">
               <span class="command-prompt">></span>
@@ -59,9 +69,14 @@ class PublicView extends HTMLElement {
     this.addStyles();
     
     setTimeout(() => {
-      const container = this.querySelector('#public-cursos-acordeon');
-      if (container) {
-        renderCursosAcordeon(container);
+      const cursosContainer = this.querySelector('#public-cursos-acordeon');
+      if (cursosContainer) {
+        renderCursosAcordeon(cursosContainer);
+      }
+      
+      const docentesContainer = this.querySelector('#public-docentes-container');
+      if (docentesContainer) {
+        renderDocentesPublic(docentesContainer);
       }
     }, 100);
   }
@@ -142,9 +157,13 @@ class PublicView extends HTMLElement {
         color: var(--terminal-text-dim);
       }
       
-      .cursos-section {
+      .cursos-section, .docentes-section {
         margin: 3rem 0;
         animation: fadeIn 0.2s ease-out;
+      }
+      
+      .docentes-terminal-container {
+        margin-top: 2rem;
       }
       
       .section-title-terminal {

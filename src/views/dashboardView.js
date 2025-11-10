@@ -78,24 +78,6 @@ class DashboardView extends HTMLElement {
               </button>
             </div>
           </div>
-          
-          <div class="dashboard-logout-terminal">
-            <div class="logout-section">
-              <div class="logout-header">
-                <span class="section-prefix">[SESSION]</span>
-                <span class="section-title">GESTIÓN DE SESIÓN</span>
-              </div>
-              <button id="dashboard-logout-btn" class="logout-btn-terminal">
-                <span class="logout-icon">[X]</span>
-                <span class="logout-text">cerrar_sesion</span>
-                <span class="logout-arrow">→</span>
-              </button>
-              <div class="logout-info">
-                <span class="info-prefix">[INFO]</span>
-                <span class="info-text">Al cerrar sesión volverás a la vista pública</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     `;
@@ -365,110 +347,6 @@ class DashboardView extends HTMLElement {
         transform: translateX(5px);
       }
       
-      .dashboard-logout-terminal {
-        margin-top: 3rem;
-        padding: 2rem;
-        background: var(--terminal-surface);
-        border: 2px solid var(--terminal-border);
-        border-left: 4px solid var(--terminal-error);
-      }
-      
-      .logout-section {
-        display: flex;
-        flex-direction: column;
-        gap: 1.5rem;
-      }
-      
-      .logout-header {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-      }
-      
-      .logout-btn-terminal {
-        background: transparent;
-        border: 2px solid var(--terminal-error);
-        padding: 1rem 1.5rem;
-        color: var(--terminal-error);
-        font-family: var(--font-terminal);
-        font-size: 0.875rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        cursor: pointer;
-        transition: all var(--transition-base);
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        text-align: left;
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        max-width: 400px;
-      }
-      
-      .logout-btn-terminal::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 4px;
-        height: 100%;
-        background: var(--terminal-error);
-        transform: scaleY(0);
-        transition: transform var(--transition-base);
-      }
-      
-      .logout-btn-terminal:hover {
-        background: rgba(255, 0, 68, 0.1);
-        box-shadow: 0 0 20px rgba(255, 0, 68, 0.3);
-        transform: translateX(5px);
-        border-color: var(--terminal-error);
-      }
-      
-      .logout-btn-terminal:hover::before {
-        transform: scaleY(1);
-      }
-      
-      .logout-icon {
-        color: var(--terminal-error);
-        font-weight: 700;
-        margin-right: 0.75rem;
-        text-shadow: 0 0 10px rgba(255, 0, 68, 0.5);
-      }
-      
-      .logout-text {
-        flex: 1;
-      }
-      
-      .logout-arrow {
-        color: var(--terminal-text-dim);
-        transition: all var(--transition-fast);
-      }
-      
-      .logout-btn-terminal:hover .logout-arrow {
-        color: var(--terminal-error);
-        transform: translateX(5px);
-        text-shadow: 0 0 10px rgba(255, 0, 68, 0.5);
-      }
-      
-      .logout-info {
-        font-size: 0.75rem;
-        color: var(--terminal-text-dim);
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-      
-      .info-prefix {
-        color: var(--terminal-accent);
-        font-weight: 600;
-      }
-      
-      .info-text {
-        color: var(--terminal-text-dim);
-      }
-      
       @media (max-width: 768px) {
         .terminal-dashboard {
           padding: 1rem;
@@ -520,40 +398,15 @@ class DashboardView extends HTMLElement {
   renderQuickActions() {
     const docenteBtn = this.querySelector('#dashboard-add-docente');
     const cursoBtn = this.querySelector('#dashboard-add-curso');
-    const logoutBtn = this.querySelector('#dashboard-logout-btn');
 
     if (docenteBtn) {
       docenteBtn.onclick = () => {
-        window.location.hash = "/docentes?nuevo=1";
+        window.location.hash = "/admin";
       };
     }
     if (cursoBtn) {
       cursoBtn.onclick = () => {
-        window.location.hash = "/cursos?nuevo=1";
-      };
-    }
-    if (logoutBtn) {
-      logoutBtn.onclick = () => {
-        // Mostrar confirmación con estilo terminal
-        const confirmMessage = `
-[SYSTEM] Cerrar sesión
-[WARNING] Se eliminará tu sesión actual
-[INFO] Serás redirigido a la vista pública
-
-¿Continuar? (S/N)
-        `.trim();
-        
-        if (confirm(confirmMessage)) {
-          // Eliminar sesión
-          localStorage.removeItem('session');
-          // Mostrar mensaje de confirmación
-          console.log('[SYSTEM] Sesión cerrada correctamente');
-          console.log('[INFO] Redirigiendo a la vista pública...');
-          // Redirigir a la vista pública
-          window.location.hash = '/public';
-        } else {
-          console.log('[INFO] Operación cancelada');
-        }
+        window.location.hash = "/admin";
       };
     }
   }

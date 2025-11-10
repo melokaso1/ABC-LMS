@@ -1,0 +1,31 @@
+/* Estilos para modales */
+
+.terminal-modal-content.form-content {
+    padding: 1.25rem 1.5rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.terminal-form-header {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+    display: none;
+}
+
+.form-title-terminal {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--terminal-accent);
+    letter-spacing: 2px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.form-prefix {
+    color: var(--terminal-text);
+    font-size: 0.875rem;
+}
+

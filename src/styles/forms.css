@@ -1,0 +1,184 @@
+/* Formularios e inputs */
+
+.input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="date"],
+textarea,
+select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-family: var(--font-terminal);
+    font-size: 0.875rem;
+    background: var(--terminal-surface);
+    border: 2px solid var(--terminal-border);
+    color: var(--terminal-text);
+    transition: border-color var(--transition-base);
+    outline: none;
+    letter-spacing: 0.5px;
+}
+
+.input:focus,
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--terminal-text);
+    background: rgba(0, 255, 65, 0.05);
+}
+
+.input::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--terminal-text-dim);
+    opacity: 0.5;
+}
+
+label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--terminal-text);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: var(--font-terminal);
+}
+
+/* Formularios terminal en modales */
+.terminal-form {
+    font-family: var(--font-terminal);
+    width: 100%;
+}
+
+.form-group-terminal {
+    margin-bottom: 1rem;
+}
+
+.terminal-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--terminal-text);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: var(--font-terminal);
+}
+
+.label-prefix {
+    color: var(--terminal-accent);
+    font-weight: 700;
+}
+
+.terminal-input {
+    width: 100%;
+    padding: 0.6rem 0.85rem;
+    font-family: var(--font-terminal);
+    font-size: 0.875rem;
+    background: var(--terminal-bg);
+    border: 1px solid var(--terminal-border);
+    color: var(--terminal-text);
+    transition: border-color var(--transition-base);
+    outline: none;
+    letter-spacing: 0.5px;
+    line-height: 1.5;
+}
+
+.terminal-input:focus {
+    border-color: var(--terminal-text);
+    background: rgba(0, 255, 65, 0.05);
+    box-shadow: 0 0 0 2px rgba(0, 255, 65, 0.1);
+}
+
+.terminal-input[type="file"] {
+    padding: 0.5rem;
+    cursor: pointer;
+    border-style: dashed;
+}
+
+.terminal-input[type="file"]:hover {
+    border-color: var(--terminal-accent);
+    background: rgba(0, 217, 255, 0.05);
+}
+
+.terminal-input[type="file"]::-webkit-file-upload-button {
+    padding: 0.4rem 0.8rem;
+    background: var(--terminal-surface);
+    border: 1px solid var(--terminal-border);
+    color: var(--terminal-text);
+    font-family: var(--font-terminal);
+    font-size: 0.75rem;
+    cursor: pointer;
+    margin-right: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all var(--transition-base);
+}
+
+.terminal-input[type="file"]::-webkit-file-upload-button:hover {
+    background: rgba(0, 255, 65, 0.1);
+    border-color: var(--terminal-text);
+}
+
+.terminal-input::placeholder {
+    color: var(--terminal-text-dim);
+    opacity: 0.5;
+}
+
+.terminal-input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+textarea.terminal-input {
+    resize: vertical;
+    min-height: 80px;
+    max-height: 200px;
+    font-family: var(--font-terminal);
+    line-height: 1.5;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+select.terminal-input {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2300ff41' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    padding-right: 2.5rem;
+}
+
+select.terminal-input option {
+    background: var(--terminal-bg);
+    color: var(--terminal-text);
+}
+
+.form-actions-terminal {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--terminal-border);
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.terminal-error {
+    padding: 0.85rem 1rem;
+    background: rgba(255, 0, 68, 0.1);
+    border: 1px solid var(--terminal-error);
+    color: var(--terminal-error);
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-family: var(--font-terminal);
+    line-height: 1.5;
+    border-radius: 4px;
+    display: block;
+}
+

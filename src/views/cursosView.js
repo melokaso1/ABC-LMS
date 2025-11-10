@@ -51,6 +51,22 @@ class CursosView extends HTMLElement {
           <div id="cursos-form-container" class="terminal-form-container" style="display:none;">
             <!-- Aquí se renderiza el formulario de curso -->
           </div>
+          
+          <div id="modulos-list-container" class="terminal-form-container" style="display:none;">
+            <!-- Aquí se renderiza la lista de módulos -->
+          </div>
+          
+          <div id="modulos-form-container" class="terminal-form-container" style="display:none;">
+            <!-- Aquí se renderiza el formulario de módulo -->
+          </div>
+          
+          <div id="lecciones-list-container" class="terminal-form-container" style="display:none;">
+            <!-- Aquí se renderiza la lista de lecciones -->
+          </div>
+          
+          <div id="leccion-form-container" class="terminal-form-container" style="display:none;">
+            <!-- Aquí se renderiza el formulario de lección -->
+          </div>
         </div>
       </div>
     `;
@@ -205,6 +221,10 @@ class CursosView extends HTMLElement {
   afterRender() {
     const tableContainer = this.querySelector('#cursos-table-container');
     const formContainer = this.querySelector('#cursos-form-container');
+    const modulosContainer = this.querySelector('#modulos-list-container');
+    const modulosFormContainer = this.querySelector('#modulos-form-container');
+    const leccionesContainer = this.querySelector('#lecciones-list-container');
+    const leccionFormContainer = this.querySelector('#leccion-form-container');
     const addBtn = this.querySelector('#cursos-add-btn');
 
     // Renderizar tabla inicial
@@ -216,6 +236,12 @@ class CursosView extends HTMLElement {
     if (addBtn) {
       addBtn.onclick = () => {
         if (formContainer) {
+          // Ocultar otros contenedores
+          if (modulosContainer) modulosContainer.style.display = 'none';
+          if (modulosFormContainer) modulosFormContainer.style.display = 'none';
+          if (leccionesContainer) leccionesContainer.style.display = 'none';
+          if (leccionFormContainer) leccionFormContainer.style.display = 'none';
+          
           formContainer.style.display = 'block';
           if (typeof renderCursoForm === 'function') {
             renderCursoForm(formContainer, null);

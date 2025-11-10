@@ -362,8 +362,20 @@ class LoginView extends HTMLElement {
       const password = formElem.password.value;
 
       if (!email || !this.validateEmail(email)) {
-        errorDiv.textContent = "[ERROR] Dirección de correo electrónico inválida";
+        errorDiv.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--terminal-error); font-weight: 700;">[ERROR]</span>
+            <div>
+              <div style="margin-bottom: 0.5rem;">El formato del correo electrónico no es válido.</div>
+              <div style="font-size: 0.85rem; color: var(--terminal-text-dim);">
+                <strong>Formato correcto:</strong> nombre@dominio.com<br>
+                <strong>Ejemplo:</strong> admin@abc.edu
+              </div>
+            </div>
+          </div>
+        `;
         errorDiv.style.display = "block";
+        formElem.email.style.borderColor = 'var(--terminal-error)';
         formElem.email.focus();
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
@@ -376,9 +388,23 @@ class LoginView extends HTMLElement {
         return;
       }
       
+      // Resetear estilo de error
+      formElem.email.style.borderColor = '';
+      
       if (!password) {
-        errorDiv.textContent = "[ERROR] La contraseña es obligatoria";
+        errorDiv.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--terminal-error); font-weight: 700;">[ERROR]</span>
+            <div>
+              <div style="margin-bottom: 0.5rem;">La contraseña es obligatoria.</div>
+              <div style="font-size: 0.85rem; color: var(--terminal-text-dim);">
+                Por favor, ingresa tu contraseña para continuar.
+              </div>
+            </div>
+          </div>
+        `;
         errorDiv.style.display = "block";
+        formElem.password.style.borderColor = 'var(--terminal-error)';
         formElem.password.focus();
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
@@ -390,6 +416,9 @@ class LoginView extends HTMLElement {
         `;
         return;
       }
+      
+      // Resetear estilo de error
+      formElem.password.style.borderColor = '';
 
       await new Promise(resolve => setTimeout(resolve, 500));
 
@@ -404,8 +433,20 @@ class LoginView extends HTMLElement {
           window.location.hash = "/dashboard";
         }, 800);
       } else {
-        errorDiv.textContent = `[ERROR] ${result.message || "Credenciales inválidas. Acceso denegado."}`;
+        errorDiv.innerHTML = `
+          <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+            <span style="color: var(--terminal-error); font-weight: 700;">[ERROR]</span>
+            <div>
+              <div style="margin-bottom: 0.5rem;">${result.message || "Credenciales inválidas. Acceso denegado."}</div>
+              <div style="font-size: 0.85rem; color: var(--terminal-text-dim);">
+                Verifica que el correo y la contraseña sean correctos. Si olvidaste tus credenciales, contacta al administrador.
+              </div>
+            </div>
+          </div>
+        `;
         errorDiv.style.display = "block";
+        formElem.email.style.borderColor = 'var(--terminal-error)';
+        formElem.password.style.borderColor = 'var(--terminal-error)';
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
         submitBtn.style.cursor = 'pointer';

@@ -8,7 +8,7 @@ export function getInitialData() {
                 apellidos: "García Torres",
                 email: "sofia.garcia@abc.edu",
                 fotoUrl: "https://randomuser.me/api/portraits/women/12.jpg",
-                areaAcademica: "Tecnología y Programación"
+                areaAcademica: "Programación"
             },
             {
                 codigo: "D102",
@@ -17,7 +17,7 @@ export function getInitialData() {
                 apellidos: "Ramírez Díaz",
                 email: "carlos.ramirez@abc.edu",
                 fotoUrl: "https://randomuser.me/api/portraits/men/43.jpg",
-                areaAcademica: "Tecnología y Programación"
+                areaAcademica: "Programación"
             },
             {
                 codigo: "D103",
@@ -26,20 +26,26 @@ export function getInitialData() {
                 apellidos: "Fernández Ospina",
                 email: "lucia.fernandez@abc.edu",
                 fotoUrl: "https://randomuser.me/api/portraits/women/44.jpg",
-                areaAcademica: "Tecnología y Programación"
+                areaAcademica: "Programación"
             }
         ],
         cursos: [],
         administrativos: [
             {
-                id: "A001",
-                nombre: "Patricia Silva",
-                email: "patricia.silva@abc.edu"
+                identificacion: "1001001001",
+                nombres: "Patricia",
+                apellidos: "Silva",
+                email: "patricia.silva@abc.edu",
+                telefono: "+57 300 123 4567",
+                cargo: "Coordinadora Académica"
             },
             {
-                id: "A002",
-                nombre: "Jorge Méndez",
-                email: "jorge.mendez@abc.edu"
+                identificacion: "1001001002",
+                nombres: "Jorge",
+                apellidos: "Méndez",
+                email: "jorge.mendez@abc.edu",
+                telefono: "+57 300 234 5678",
+                cargo: "Director Administrativo"
             }
         ],
         credenciales: [

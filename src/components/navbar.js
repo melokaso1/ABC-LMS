@@ -1,4 +1,5 @@
 // Navbar principal mejorado
+import { getItemSync, removeItemSync } from '../utils/storage.js';
 
 export function renderNavbar(container = document.body) {
   // Borrar navbar anterior
@@ -39,7 +40,6 @@ export function renderNavbar(container = document.body) {
         font-weight: 700;
         background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
         -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
         background-clip: text;
         text-decoration: none;
         display: flex;
@@ -153,11 +153,9 @@ export function renderNavbar(container = document.body) {
   menu.className = 'abc-navbar-menu';
 
   // Items de navegación según sesión
-  const hasSession = !!localStorage.getItem('session');
+  const hasSession = !!getItemSync('session');
   const items = [
     { label: 'Inicio', route: '/dashboard', showIfSession: true },
-    { label: 'Docentes', route: '/docentes', showIfSession: true },
-    { label: 'Cursos', route: '/cursos', showIfSession: true },
     { label: 'Admin', route: '/admin', showIfSession: true },
     { label: 'Público', route: '/public', showIfNoSession: true },
     { label: 'Login', route: '/login', showIfNoSession: true },
@@ -193,7 +191,7 @@ export function renderNavbar(container = document.body) {
       Cerrar sesión
     `;
     logoutBtn.onclick = function () {
-      localStorage.removeItem('session');
+      removeItemSync('session');
       window.location.hash = '/public';
     };
   }

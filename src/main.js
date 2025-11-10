@@ -12,18 +12,21 @@ import { Router } from './utils/router.js';
 // Importar inicialización de datos
 import { getInitialData } from './data/initializeData.js';
 
+// Importar storage
+import { getItemSync, setItemSync } from './utils/storage.js';
+
 // Inicializar datos si no existen
 function initializeAppData() {
   // Obtener datos iniciales una sola vez
   const appData = getInitialData();
   
   // Inicializar datos principales (docentes, cursos, etc.) en appData
-  if (!localStorage.getItem('appData')) {
-    localStorage.setItem('appData', JSON.stringify(appData));
+  if (!getItemSync('appData')) {
+    setItemSync('appData', appData);
   }
   
   // Inicializar usuarios para login si no existen
-  if (!localStorage.getItem('users')) {
+  if (!getItemSync('users')) {
     // Convertir credenciales a formato de usuarios para el login
     if (appData.credenciales && appData.credenciales.length > 0) {
       const users = appData.credenciales.map(cred => ({
@@ -31,17 +34,20 @@ function initializeAppData() {
         password: cred.password,
         rol: cred.rol
       }));
-      localStorage.setItem('users', JSON.stringify(users));
+      setItemSync('users', users);
     }
   }
   
-  // También inicializar docentes y cursos directamente para compatibilidad con componentes existentes
-  if (!localStorage.getItem('docentes') && appData.docentes) {
-    localStorage.setItem('docentes', JSON.stringify(appData.docentes));
+  // También inicializar docentes, cursos y administrativos directamente para compatibilidad con componentes existentes
+  if (!getItemSync('docentes') && appData.docentes) {
+    setItemSync('docentes', appData.docentes);
   }
-  if (!localStorage.getItem('cursos')) {
+  if (!getItemSync('cursos')) {
     // Inicializar cursos incluso si está vacío para evitar problemas
-    localStorage.setItem('cursos', JSON.stringify(appData.cursos || []));
+    setItemSync('cursos', appData.cursos || []);
+  }
+  if (!getItemSync('administrativos') && appData.administrativos) {
+    setItemSync('administrativos', appData.administrativos);
   }
 }
 

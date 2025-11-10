@@ -1,0 +1,34 @@
+/* Variables CSS - Colores, fuentes, espaciado */
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* Colores */
+    --terminal-bg: #0a0a0a;
+    --terminal-surface: #121212;
+    --terminal-border: #1a1a1a;
+    --terminal-text: #00ff41;
+    --terminal-text-dim: #00cc33;
+    --terminal-accent: #00d9ff;
+    --terminal-accent-alt: #ff0080;
+    --terminal-warning: #ffaa00;
+    --terminal-error: #ff0044;
+    --terminal-success: #00ff88;
+    --terminal-highlight: #0066ff;
+    
+    /* Tipografía */
+    --font-terminal: 'JetBrains Mono', 'Courier New', 'Consolas', monospace;
+    
+    /* Espaciado */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+    
+    /* Transiciones */
+    --transition-fast: 100ms ease;
+    --transition-base: 150ms ease;
+    --transition-slow: 250ms ease;
+}
+

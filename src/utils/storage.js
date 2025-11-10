@@ -1,107 +1,103 @@
-import { getInitialData } from '../data/initializeData';
+/**
+ * Sistema de almacenamiento basado en promesas
+ * Maneja operaciones de localStorage de forma asíncrona
+ */
 
-// Guarda datos en localStorage usando una clave
-export function saveData(key, data) {
-    localStorage.setItem(key, JSON.stringify(data));
-}
-
-// Carga datos desde localStorage usando una clave
-export function loadData(key) {
-    const item = localStorage.getItem(key);
+/**
+ * Obtiene un valor del localStorage
+ * @param {string} key - Clave del localStorage
+ * @returns {Promise<any>} Promesa que se resuelve con el valor
+ */
+export function getItem(key) {
+  return new Promise((resolve) => {
     try {
-        return item ? JSON.parse(item) : null;
-    } catch (e) {
-        console.error("Error al analizar los datos de localStorage para la clave:", key, e);
-        return null;
+      const item = localStorage.getItem(key);
+      const value = item ? JSON.parse(item) : null;
+      resolve(value);
+    } catch (error) {
+      console.error(`[STORAGE ERROR] Error al leer ${key}:`, error);
+      resolve(null);
     }
+  });
 }
 
-// Inicializa los datos solo si no existen en localStorage
-export function initData() {
-    if (!localStorage.getItem("appData")) {
-        const initialData = getInitialData(); // Obtiene datos iniciales
-        saveData("appData", initialData);     // Guarda datos iniciales
+/**
+ * Guarda un valor en localStorage
+ * @param {string} key - Clave del localStorage
+ * @param {any} value - Valor a guardar
+ * @returns {Promise<void>} Promesa que se resuelve cuando se guarda
+ */
+export function setItem(key, value) {
+  return new Promise((resolve, reject) => {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+      resolve();
+    } catch (error) {
+      console.error(`[STORAGE ERROR] Error al escribir ${key}:`, error);
+      reject(error);
     }
+  });
 }
 
-// Funciones CRUD específicas para docentes
-
-// Cargar lista de docentes desde appData en localStorage
-export function loadDocentes() {
-    const appData = loadData("appData");
-    return appData && appData.docentes ? appData.docentes : [];
-}
-
-// Guardar (crear/actualizar) un docente en appData
-export function saveDocente(docente) {
-    const appData = loadData("appData") || getInitialData();
-    let docentes = appData.docentes || [];
-    const index = docentes.findIndex(d => d.codigo === docente.codigo);
-
-    if (index !== -1) {
-        // Actualizar docente existente
-        docentes[index] = docente;
-    } else {
-        // Agregar nuevo docente
-        docentes.push(docente);
+/**
+ * Elimina un valor del localStorage
+ * @param {string} key - Clave a eliminar
+ * @returns {Promise<void>} Promesa que se resuelve cuando se elimina
+ */
+export function removeItem(key) {
+  return new Promise((resolve) => {
+    try {
+      localStorage.removeItem(key);
+      resolve();
+    } catch (error) {
+      console.error(`[STORAGE ERROR] Error al eliminar ${key}:`, error);
+      resolve();
     }
-    appData.docentes = docentes;
-    saveData("appData", appData);
+  });
 }
 
-// Eliminar un docente por código
-export function deleteDocente(codigo) {
-    const appData = loadData("appData");
-    if (!appData || !appData.docentes) return;
-    const docentes = appData.docentes.filter(d => d.codigo !== codigo);
-    appData.docentes = docentes;
-    saveData("appData", appData);
+/**
+ * Elimina un valor de forma síncrona (para casos donde se necesita inmediatamente)
+ * @param {string} key - Clave a eliminar
+ * @returns {boolean} true si se eliminó correctamente
+ */
+export function removeItemSync(key) {
+  try {
+    localStorage.removeItem(key);
+    return true;
+  } catch (error) {
+    console.error(`[STORAGE ERROR] Error al eliminar ${key}:`, error);
+    return false;
+  }
 }
 
-
-// Valida si el email es único (entre todos los docentes), excluyendo opcionalmente un docente por 'codigo'
-export function validateEmailUnique(email, excludeId = null) {
-    const appData = loadData("appData");
-    if (!appData || !appData.docentes) return true;
-    return !appData.docentes.some(docente => 
-        docente.email === email && 
-        (excludeId ? docente.codigo !== excludeId : true)
-    );
+/**
+ * Obtiene un valor de forma síncrona (para casos donde se necesita inmediatamente)
+ * @param {string} key - Clave del localStorage
+ * @returns {any} Valor almacenado o null
+ */
+export function getItemSync(key) {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch (error) {
+    console.error(`[STORAGE ERROR] Error al leer ${key}:`, error);
+    return null;
+  }
 }
 
-// Valida si el código es único en un tipo ('docente', 'administrativo', etc), excluyendo opcionalmente por id
-export function validateCodigoUnique(codigo, tipo = "docente", excludeId = null) {
-    const appData = loadData("appData");
-    if (!appData) return true;
-
-    let lista = [];
-    if (tipo === "docente" && appData.docentes) {
-        lista = appData.docentes;
-    } else if (tipo === "administrativo" && appData.administrativos) {
-        lista = appData.administrativos;
-    } else if (tipo === "curso" && appData.cursos) {
-        lista = appData.cursos;
-    }
-
-    // Para administrativos asumimos 'id', para docentes 'codigo'
-    const idKey = tipo === "administrativo" ? "id" : "codigo";
-
-    return !lista.some(item =>
-        item[idKey] === codigo &&
-        (excludeId ? item[idKey] !== excludeId : true)
-    );
+/**
+ * Guarda un valor de forma síncrona (para casos donde se necesita inmediatamente)
+ * @param {string} key - Clave del localStorage
+ * @param {any} value - Valor a guardar
+ * @returns {boolean} true si se guardó correctamente
+ */
+export function setItemSync(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch (error) {
+    console.error(`[STORAGE ERROR] Error al escribir ${key}:`, error);
+    return false;
+  }
 }
-
-// Valida si un docente tiene cursos asignados (retorna true si tiene al menos un curso)
-export function validateDocenteHasCursos(docenteId) {
-    const appData = loadData("appData");
-    if (!appData || !appData.cursos) return false;
-
-    // Supone que cada curso tiene una propiedad 'docenteId' o 'docente' que referencia el código/id del docente
-    return appData.cursos.some(curso => 
-        curso.docenteId === docenteId || curso.docente === docenteId
-    );
-}
-
-
-

@@ -5,6 +5,7 @@ import '../views/cursosView.js';
 import '../views/adminView.js';
 import '../views/publicView.js';
 import { renderNavbar } from '../components/navbar.js';
+import { getItemSync } from './storage.js';
 
 // Definición de vistas/rutas
 const routes = {
@@ -37,8 +38,8 @@ const Router = {
     },
 
     isAuthenticated() {
-        // Verificar si existe un 'session' en localStorage
-        return !!localStorage.getItem('session');
+        // Verificar si existe un 'session' en storage
+        return !!getItemSync('session');
     },
 
     handleRoute() {
@@ -65,6 +66,12 @@ const Router = {
             return;
         }
 
+        // Redirigir /docentes y /cursos a /admin (ya que ahora están unificados)
+        if (this.isAuthenticated() && (path === '/docentes' || path === '/cursos')) {
+            window.location.hash = '/admin' + (queryString ? '?' + queryString : '');
+            return;
+        }
+
         const viewTag = this.routes[path] || this.routes['/public'];
         
         // Renderizado de la vista
@@ -72,7 +79,7 @@ const Router = {
         
         // Renderizar navbar si está autenticado y no es la vista pública o login
         if (this.isAuthenticated() && path !== '/public' && path !== '/login') {
-          renderNavbar(root);
+            renderNavbar(root);
         }
         
         // Renderizar la vista
