@@ -4,6 +4,7 @@ import '../views/docentesView.js';
 import '../views/cursosView.js';
 import '../views/adminView.js';
 import '../views/publicView.js';
+import { renderNavbar } from '../components/navbar.js';
 
 // Definición de vistas/rutas
 const routes = {
@@ -23,8 +24,6 @@ const protectedRoutes = [
     '/admin'
 ];
 
-const root = document.getElementById('root');
-
 const Router = {
     routes,
 
@@ -38,32 +37,61 @@ const Router = {
     },
 
     isAuthenticated() {
-        // Ejemplo: verificar si existe un 'session' en localStorage
+        // Verificar si existe un 'session' en localStorage
         return !!localStorage.getItem('session');
     },
 
     handleRoute() {
-        let path = window.location.hash.replace('#', '') || '/public';
+        const root = document.getElementById('root');
+        if (!root) {
+            console.error('Root element not found');
+            return;
+        }
 
-        // Protección de rutas
+        // Extraer path y query parameters del hash
+        const hash = window.location.hash.replace('#', '') || '/public';
+        const [path, queryString] = hash.split('?');
+        const queryParams = new URLSearchParams(queryString || '');
+
+        // Protección de rutas - solo redirigir a login si se intenta acceder a una ruta protegida sin autenticación
         if (protectedRoutes.includes(path) && !this.isAuthenticated()) {
-            // Redirigir a login si no autenticado
-            path = '/login';
-            window.location.hash = path; // Forzar hash para mantener consistencia
+            window.location.hash = '/login';
+            return; // Salir aquí, el hashchange disparará otro handleRoute
+        }
+
+        // Si está autenticado y está en /public o /login, redirigir a dashboard (solo si no hay query params)
+        if (this.isAuthenticated() && (path === '/public' || path === '/login') && !queryString) {
+            window.location.hash = '/dashboard';
+            return;
         }
 
         const viewTag = this.routes[path] || this.routes['/public'];
+        
         // Renderizado de la vista
-        if (root) {
-            root.innerHTML = '';
-            root.appendChild(document.createElement(viewTag));
+        root.innerHTML = '';
+        
+        // Renderizar navbar si está autenticado y no es la vista pública o login
+        if (this.isAuthenticated() && path !== '/public' && path !== '/login') {
+          renderNavbar(root);
         }
+        
+        // Renderizar la vista
+        const viewElement = document.createElement(viewTag);
+        root.appendChild(viewElement);
     },
 
     init() {
+        // Manejar cambios de hash
         window.addEventListener('hashchange', () => this.handleRoute());
-        document.addEventListener('DOMContentLoaded', () => this.handleRoute());
+        // Manejar carga inicial
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.handleRoute());
+        } else {
+            // Si el DOM ya está listo, ejecutar inmediatamente
+            this.handleRoute();
+        }
     }
 };
 
 export { Router };
+export { routes };

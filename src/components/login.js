@@ -16,7 +16,7 @@ export function validateCredentials(email, password) {
   );
 }
 
-// Valida el login y guarda la sesión en sessionStorage si es válido
+// Valida el login y guarda la sesión en localStorage si es válido
 export function handleLogin(email, password) {
   if (!email || !password) {
     return { success: false, message: "Correo y contraseña son requeridos." };
@@ -25,7 +25,7 @@ export function handleLogin(email, password) {
   const isOk = validateCredentials(email, password);
   if (isOk) {
     const user = { email };
-    sessionStorage.setItem("session", JSON.stringify(user));
+    localStorage.setItem("session", JSON.stringify(user));
     return { success: true, user };
   } else {
     return { success: false, message: "Usuario o contraseña incorrectos." };

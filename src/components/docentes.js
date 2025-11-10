@@ -33,25 +33,116 @@ export function renderDocentesTable(container) {
   if (!container) return;
   const docentes = loadDocentes();
   if (docentes.length === 0) {
-    container.innerHTML = `<div class="abc-empty-state">No hay docentes registrados.</div>`;
+    container.innerHTML = `<div class="abc-empty-state terminal-empty-state">[INFO] No hay docentes registrados en el sistema.</div>`;
     return;
   }
+  
+  // Agregar estilos si no existen
+  if (!document.getElementById('docentes-table-styles')) {
+    const style = document.createElement('style');
+    style.id = 'docentes-table-styles';
+    style.textContent = `
+      .abc-docentes-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--terminal-surface);
+        border: 2px solid var(--terminal-border);
+        font-family: var(--font-terminal);
+        font-size: 0.875rem;
+      }
+      
+      .abc-docentes-table th {
+        background: var(--terminal-surface);
+        padding: 1rem;
+        text-align: left;
+        font-weight: 700;
+        color: var(--terminal-accent);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        letter-spacing: 2px;
+        border-bottom: 2px solid var(--terminal-border);
+        text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+      }
+      
+      .abc-docentes-table td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--terminal-border);
+        color: var(--terminal-text-dim);
+      }
+      
+      .abc-docentes-table tr:hover {
+        background: rgba(0, 255, 65, 0.05);
+        color: var(--terminal-text);
+      }
+      
+      .abc-docentes-table tr:last-child td {
+        border-bottom: none;
+      }
+      
+      .docente-edit-btn, .docente-delete-btn {
+        padding: 0.5rem 1rem;
+        margin-right: 0.5rem;
+        font-family: var(--font-terminal);
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border: 2px solid var(--terminal-border);
+        background: transparent;
+        color: var(--terminal-text);
+        cursor: pointer;
+        transition: all var(--transition-fast);
+      }
+      
+      .docente-edit-btn {
+        border-color: var(--terminal-accent);
+        color: var(--terminal-accent);
+      }
+      
+      .docente-edit-btn:hover {
+        background: rgba(0, 217, 255, 0.1);
+        box-shadow: 0 0 10px rgba(0, 217, 255, 0.3);
+      }
+      
+      .docente-delete-btn {
+        border-color: var(--terminal-error);
+        color: var(--terminal-error);
+      }
+      
+      .docente-delete-btn:hover {
+        background: rgba(255, 0, 68, 0.1);
+        box-shadow: 0 0 10px rgba(255, 0, 68, 0.3);
+      }
+      
+      .terminal-empty-state {
+        padding: 2rem;
+        text-align: center;
+        color: var(--terminal-text-dim);
+        font-family: var(--font-terminal);
+        font-size: 0.875rem;
+        border: 2px dashed var(--terminal-border);
+        background: var(--terminal-surface);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
   let table = `<table class="abc-docentes-table">
     <thead>
       <tr>
-        <th>Nombre</th>
-        <th>Email</th>
-        <th>Acciones</th>
+        <th>NOMBRE</th>
+        <th>EMAIL</th>
+        <th>ACCIONES</th>
       </tr>
     </thead>
     <tbody>
       ${docentes.map(d =>
         `<tr>
-          <td>${d.nombre || ""}</td>
+          <td>${d.nombres || d.nombre || ""} ${d.apellidos || ""}</td>
           <td>${d.email}</td>
           <td>
-            <button class="docente-edit-btn" data-email="${d.email}">Editar</button>
-            <button class="docente-delete-btn" data-email="${d.email}">Eliminar</button>
+            <button class="docente-edit-btn" data-email="${d.email}">EDITAR</button>
+            <button class="docente-delete-btn" data-email="${d.email}">ELIMINAR</button>
           </td>
         </tr>`
       ).join('')}
@@ -76,21 +167,57 @@ export function renderDocenteForm(container, docente = null) {
   if (!container) return;
   container.style.display = "block";
   container.innerHTML = `
-    <form id="docente-form" class="abc-docente-form">
-      <h2>${docente ? "Editar docente" : "Nuevo docente"}</h2>
-      <div>
-        <label>Nombre</label>
-        <input type="text" name="nombre" required value="${docente?.nombre || ''}">
+    <div class="terminal-form-header">
+      <h3 class="form-title-terminal">
+        <span class="form-prefix">[FORM]</span>
+        ${docente ? "EDITAR DOCENTE" : "NUEVO DOCENTE"}
+      </h3>
+    </div>
+    <form id="docente-form" class="terminal-form">
+      <div class="form-group-terminal">
+        <label for="docente-nombre" class="terminal-label">
+          <span class="label-prefix">></span>
+          NOMBRE_COMPLETO
+        </label>
+        <input 
+          type="text" 
+          id="docente-nombre"
+          name="nombre" 
+          required 
+          value="${docente?.nombres || docente?.nombre || ''}"
+          class="terminal-input"
+          placeholder="Ingrese el nombre del docente"
+        />
       </div>
-      <div>
-        <label>Email</label>
-        <input type="email" name="email" required value="${docente?.email || ''}" ${docente ? "readonly" : ''}>
+      <div class="form-group-terminal">
+        <label for="docente-email" class="terminal-label">
+          <span class="label-prefix">></span>
+          EMAIL
+        </label>
+        <input 
+          type="email" 
+          id="docente-email"
+          name="email" 
+          required 
+          value="${docente?.email || ''}" 
+          ${docente ? "readonly" : ''}
+          class="terminal-input"
+          placeholder="docente@example.com"
+        />
       </div>
-      <div class="abc-form-actions">
-        <button type="submit">${docente ? "Guardar cambios" : "Agregar"}</button>
-        <button type="button" id="cancelar-docente-form">Cancelar</button>
+      <div class="form-actions-terminal">
+        <button type="submit" class="btn btn-success">
+          <span class="btn-prefix">$</span>
+          ${docente ? "ACTUALIZAR" : "CREAR"}
+          <span class="btn-suffix">→</span>
+        </button>
+        <button type="button" id="cancelar-docente-form" class="btn btn-secondary">
+          <span class="btn-prefix">[</span>
+          CANCELAR
+          <span class="btn-suffix">]</span>
+        </button>
       </div>
-      <div id="form-error" class="abc-error" style="display:none;color:#a33;margin-top:0.5em;"></div>
+      <div id="form-error" class="terminal-error" style="display:none;"></div>
     </form>
   `;
   
@@ -112,45 +239,114 @@ export function handleSaveDocente(formElem, formContainer) {
   const errorDiv = formElem.querySelector('#form-error');
 
   if (!nombre || !email) {
-    errorDiv.textContent = "Nombre y email son obligatorios.";
+    errorDiv.textContent = "[ERROR] Nombre y email son obligatorios";
     errorDiv.style.display = "block";
     return;
   }
   // comprobación de formato de correo
   if (!/\S+@\S+\.\S+/.test(email)) {
-    errorDiv.textContent = "Correo electrónico inválido.";
+    errorDiv.textContent = "[ERROR] Correo electrónico inválido";
     errorDiv.style.display = "block";
     return;
   }
 
   const docentes = loadDocentes();
-  const yaExiste = docentes.some(d => d.email === email);
-  // Si es alta y ya existe (el campo email solo es readonly en edición)
-  if (!formElem.email.readOnly && yaExiste) {
-    errorDiv.textContent = "Ya existe un docente con ese correo.";
+  const esEdicion = formElem.email.readOnly;
+  const yaExiste = docentes.some(d => d.email === email && (!esEdicion || true));
+  
+  // Si es alta y ya existe
+  if (!esEdicion && yaExiste) {
+    errorDiv.textContent = "[ERROR] Ya existe un docente con ese correo";
     errorDiv.style.display = "block";
     return;
   }
 
   const docente = { nombre, email };
-  saveDocente(docente);
-  // Oculta formulario
-  if (formContainer) {
-    formContainer.style.display = "none";
-    formContainer.innerHTML = "";
+  
+  if (saveDocente(docente)) {
+    // Si es un nuevo docente, crear credenciales de login
+    if (!esEdicion && !yaExiste) {
+      const usersJson = localStorage.getItem('users');
+      let users = [];
+      try {
+        users = usersJson ? JSON.parse(usersJson) : [];
+      } catch {
+        users = [];
+      }
+      
+      // Verificar si el usuario ya existe
+      if (!users.find(u => u.email === email)) {
+        // Crear credenciales por defecto (password = "docente123")
+        users.push({
+          email: email,
+          password: "docente123",
+          rol: "docente"
+        });
+        localStorage.setItem('users', JSON.stringify(users));
+        console.log('[SYSTEM] Credenciales creadas para:', email);
+        console.log('[INFO] Password por defecto: docente123');
+      }
+    }
+    
+    // Oculta formulario
+    if (formContainer) {
+      formContainer.style.display = "none";
+      formContainer.innerHTML = "";
+    }
+    
+    // Recarga la tabla
+    const tableContainer = document.getElementById('docentes-table-container');
+    if (tableContainer) {
+      renderDocentesTable(tableContainer);
+    }
+    
+    // Limpiar parámetro de URL si existe
+    const hash = window.location.hash.replace('#', '') || '';
+    const [path] = hash.split('?');
+    if (path === '/docentes') {
+      window.location.hash = '/docentes';
+    }
+  } else {
+    errorDiv.textContent = "[ERROR] No se pudo guardar el docente";
+    errorDiv.style.display = "block";
   }
-  // Recarga la tabla
-  const tableContainer = document.getElementById('docentes-table-container');
-  if (tableContainer) renderDocentesTable(tableContainer);
 }
 
 // Borra un docente por email y recarga la tabla
 export function handleDeleteDocente(email, tableContainer) {
   if (!email) return;
-  if (!window.confirm("¿Está seguro de eliminar este docente?")) return;
+  
+  const confirmMessage = `
+[WARNING] Eliminar docente
+[INFO] Se eliminará el docente: ${email}
+[WARNING] Esta acción no se puede deshacer
+
+¿Continuar? (S/N)
+  `.trim();
+  
+  if (!window.confirm(confirmMessage)) {
+    console.log('[INFO] Operación cancelada');
+    return;
+  }
+  
   let docentes = loadDocentes();
   docentes = docentes.filter(d => d.email !== email);
   localStorage.setItem('docentes', JSON.stringify(docentes));
+  
+  // También eliminar credenciales si existen
+  const usersJson = localStorage.getItem('users');
+  if (usersJson) {
+    try {
+      let users = JSON.parse(usersJson);
+      users = users.filter(u => u.email !== email);
+      localStorage.setItem('users', JSON.stringify(users));
+    } catch {
+      // Ignorar errores
+    }
+  }
+  
+  console.log('[SYSTEM] Docente eliminado:', email);
+  
   // Recarga la tabla
   if (tableContainer) renderDocentesTable(tableContainer);
 }
