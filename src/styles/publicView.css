@@ -1,0 +1,104 @@
+@import './variables.css';
+
+.public-view {
+    min-height: 100vh;
+    background: var(--color-bg-secondary);
+}
+
+.public-header {
+    background: var(--color-bg-gradient);
+    color: var(--color-text-white);
+    padding: 1rem;
+    text-align: center;
+    position: relative;
+}
+
+.header-content {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+}
+
+.header-logo {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.logo-image {
+    height: 300px;
+    width: auto;
+}
+
+.header-tagline {
+    position: relative;
+    transform: translateY(-75px);
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    margin: 0;
+}
+
+.public-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0 0;
+    color: var(--color-text-white);
+    position: relative;
+    z-index: 1;
+}
+
+.login-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    color: var(--color-text-white);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    transition: background 0.2s;
+}
+
+.login-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.login-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.public-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+@media (max-width: 768px) {
+    .public-header {
+        padding: 0.75rem;
+    }
+    
+    .header-content {
+        top: 0.75rem;
+        right: 0.75rem;
+    }
+    
+    .logo-image {
+        height: 200px;
+    }
+    
+    .public-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .public-main {
+        padding: 1.5rem 1rem;
+    }
+}

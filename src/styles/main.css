@@ -1,13 +1,48 @@
-/* Archivo principal - Importa todos los estilos */
-
 @import './variables.css';
-@import './reset.css';
-@import './typography.css';
-@import './buttons.css';
-@import './forms.css';
-@import './tables.css';
-@import './cards.css';
-@import './navbar.css';
-@import './modals.css';
-@import './utilities.css';
-@import './responsive.css';
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    line-height: 1.6;
+    color: var(--color-text-primary);
+    background: var(--color-bg-secondary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    min-height: 100vh;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Login view ocupa toda la pantalla */
+login-view {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* Estilos base para otras vistas */
+.dashboard-view,
+.admin-view {
+    padding: var(--spacing-lg);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-view h1,
+.admin-view h1 {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-text-primary);
+}
+

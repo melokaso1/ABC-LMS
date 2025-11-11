@@ -1,0 +1,152 @@
+@import './variables.css';
+
+cursos-component {
+    display: block;
+    width: 100%;
+}
+
+cursos-component h2 {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
+    position: relative;
+    padding-bottom: var(--spacing-md);
+}
+
+cursos-component h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--color-bg-gradient);
+    border-radius: var(--border-radius-md);
+}
+
+.cursos-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+}
+
+.curso-card {
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-lg);
+    box-shadow: var(--shadow-md);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.curso-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: var(--color-bg-gradient);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition-base);
+}
+
+.curso-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-primary-light);
+}
+
+.curso-card:hover::before {
+    transform: scaleX(1);
+}
+
+.curso-card h3 {
+    color: var(--color-text-primary);
+    font-size: var(--font-size-xl);
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+    line-height: 1.3;
+    transition: color var(--transition-fast);
+}
+
+.curso-card:hover h3 {
+    color: var(--color-primary);
+}
+
+.curso-codigo {
+    display: inline-block;
+    background: var(--color-bg-tertiary);
+    color: var(--color-primary);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    margin-bottom: var(--spacing-md);
+    letter-spacing: 0.05em;
+}
+
+.curso-descripcion {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    font-size: var(--font-size-base);
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.curso-action {
+    color: var(--color-primary);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--color-border-light);
+    transition: all var(--transition-fast);
+}
+
+.curso-card:hover .curso-action {
+    color: var(--color-primary-dark);
+    transform: translateX(4px);
+}
+
+/* Estado vacío */
+cursos-component p:only-child {
+    text-align: center;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-lg);
+    padding: var(--spacing-2xl);
+    background: var(--color-bg-primary);
+    border-radius: var(--border-radius-lg);
+    border: 2px dashed var(--color-border);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    cursos-component h2 {
+        font-size: var(--font-size-2xl);
+    }
+    
+    .cursos-container {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-md);
+    }
+    
+    .curso-card {
+        padding: var(--spacing-md);
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .cursos-container {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
