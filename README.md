@@ -37,6 +37,8 @@
 - 👨‍🏫 Asignar docentes a cursos (selector de docentes disponibles)
 - 📊 Visualización de estadísticas
 - 📝 Campos: Código, nombre, descripción, docente asignado
+- 🎯 Vista detallada de cursos con módulos y lecciones expandibles
+- 🔍 Navegación directa a cursos desde dashboard
 
 ### 📦 Gestión de Módulos
 - ➕ Crear módulos dentro de cursos (disponible para administradores)
@@ -45,6 +47,8 @@
 - 📋 Visualizar módulos por curso
 - 👁️ Acceso desde el botón "MODULOS" en la tabla de cursos
 - 📝 Campos: Código, nombre, descripción
+- 🔽 Expansión/colapso de módulos en vista de curso
+- 📜 Auto-scroll al expandir módulos
 
 ### 📝 Gestión de Lecciones
 - ➕ Crear lecciones dentro de módulos
@@ -53,19 +57,32 @@
 - 🎥 Soporte para diferentes tipos: video, lectura, quiz
 - 📄 Campos: Título, intensidad horaria, contenido (texto)
 - 🎬 Multimedia: Videos, PDFs, imágenes y enlaces adicionales
+- 🎨 Vista mejorada de lecciones en página dedicada (no modal)
+- 📱 Diseño responsive y fácil de leer
 
 ### 🔐 Autenticación
-- 🔒 Sistema de login para administradores
-- 👤 Gestión de sesiones
+- 🔒 Sistema de login para administradores y usuarios
+- 👤 Gestión de sesiones con tokens
 - 🚪 Cierre de sesión desde la navbar
 - 🛡️ Protección de rutas
+- 🔄 Redirección automática a Dashboard después del login
 - 👥 Los docentes no requieren login (solo se registran con email)
 
 ### 📊 Dashboard
-- 📈 Estadísticas de docentes y cursos
-- 🎯 Accesos rápidos
-- 📱 Vista responsive
+- 📈 Estadísticas en tiempo real: cursos, módulos, lecciones y docentes
+- 🎯 Accesos rápidos a cursos y panel de administración
+- 📱 Vista responsive y moderna que ocupa toda la pantalla
 - 💾 Datos persistidos en localStorage
+- 🎨 Diseño intuitivo con tarjetas de estadísticas
+- 🔗 Navegación integrada con navbar
+- 👨‍🏫 Sección de Docentes Activos con información detallada (foto, código, área académica, cursos asignados)
+
+### 🔑 Gestión de Credenciales
+- ➕ Crear nuevas credenciales de usuario
+- ✏️ Editar contraseñas de usuarios existentes
+- 🗑️ Eliminar credenciales
+- 👤 Gestión de roles (administrativo, docente, etc.)
+- 📋 Campos: Email, contraseña, rol
 
 ## 🚀 Instalación
 
@@ -95,25 +112,36 @@ http://localhost:5173
 ```
 proyecto/
 ├── src/
-│   ├── components/       # Componentes reutilizables
-│   │   ├── cursos.js     # Gestión de cursos
-│   │   ├── docentes.js   # Gestión de docentes
-│   │   ├── navbar.js     # Barra de navegación
+│   ├── auth/             # Autenticación
+│   │   └── gentoken.js   # Generación de tokens
+│   ├── components/        # Componentes reutilizables
+│   │   ├── cursos.js     # Componente de cursos
+│   │   ├── modal.js      # Componente de modal
 │   │   └── ...
 │   ├── views/            # Vistas principales
-│   │   ├── dashboardView.js
-│   │   ├── cursosView.js
-│   │   ├── docentesView.js
-│   │   ├── adminView.js
+│   │   ├── dashboardView.js    # Dashboard principal
+│   │   ├── adminView.js        # Panel de administración
+│   │   ├── loginView.js        # Vista de login
+│   │   ├── publicView.js       # Vista pública de cursos
+│   │   ├── cursoView.js        # Vista detallada de curso
 │   │   └── ...
 │   ├── utils/            # Utilidades
-│   │   ├── router.js     # Enrutador
-│   │   ├── cache.js      # Sistema de caché
+│   │   ├── router.js     # Enrutador con rutas dinámicas
+│   │   ├── storage.js    # Gestión de localStorage
+│   │   ├── helpers.js    # Funciones auxiliares
 │   │   └── ...
 │   ├── data/             # Datos iniciales
 │   │   └── initializeData.js
 │   ├── styles/           # Estilos
-│   │   └── main.css      # Estilos principales
+│   │   ├── main.css      # Estilos principales
+│   │   ├── dashboardView.css
+│   │   ├── adminView.css
+│   │   ├── loginView.css
+│   │   ├── publicView.css
+│   │   ├── cursoView.css
+│   │   ├── modal.css
+│   │   ├── variables.css
+│   │   └── ...
 │   └── main.js           # Punto de entrada
 ├── index.html
 ├── package.json
@@ -122,9 +150,33 @@ proyecto/
 
 ## 🎯 Uso
 
+### 🔐 Iniciar Sesión
+
+1. Al abrir la aplicación, serás redirigido automáticamente a la página de login
+2. Ingresa tus credenciales (email y contraseña)
+3. Después del login, serás redirigido automáticamente al **Dashboard**
+4. Desde el Dashboard puedes acceder al **Panel de Administración** o navegar a los cursos
+
+### 📊 Dashboard
+
+El Dashboard es la primera vista después del login y muestra:
+- **Estadísticas generales**: Cursos disponibles, módulos totales, lecciones totales, docentes
+- **Lista de cursos**: Acceso directo a cada curso con información de módulos y lecciones
+- **Docentes activos**: Lista completa de docentes con foto, código, área académica y cantidad de cursos asignados
+- **Navegación**: Botones para acceder al Panel Admin y cerrar sesión
+- **Pantalla completa**: Diseño optimizado que utiliza todo el espacio disponible
+
 ### 👤 Credenciales por Defecto
 
 Al iniciar la aplicación, se crean usuarios de ejemplo. Consulta `src/data/initializeData.js` para ver las credenciales de administrador.
+
+### 🔑 Gestionar Credenciales
+
+1. Navega a **Admin** → Tab **Credenciales**
+2. Para **crear una nueva credencial**: Haz clic en **AGREGAR_CREDENCIAL**
+3. Para **editar una contraseña**: Haz clic en el botón de editar (✏️) junto a la credencial
+4. Para **eliminar una credencial**: Haz clic en el botón de eliminar (🗑️)
+5. Completa los campos: Email, contraseña y rol
 
 ### 👨‍💼 Crear un Administrativo
 
@@ -166,6 +218,23 @@ Al iniciar la aplicación, se crean usuarios de ejemplo. Consulta `src/data/init
 5. Selecciona el tipo (video, lectura, quiz)
 6. Completa el formulario
 7. Guarda la lección
+
+### 🎓 Ver Detalles de un Curso
+
+1. Desde el **Dashboard**, haz clic en cualquier tarjeta de curso
+2. O desde la **Vista Pública**, haz clic en un curso
+3. Se abrirá la vista detallada del curso con:
+   - Información del curso y docente
+   - Lista de módulos expandibles/colapsables
+   - Lecciones dentro de cada módulo
+   - Auto-scroll al expandir módulos
+4. Usa el botón **"Volver a Cursos"** para regresar
+
+### 🔄 Navegación entre Vistas
+
+- **Dashboard** → Panel Admin: Botón "Panel Admin" en el header
+- **Panel Admin** → Dashboard: Botón "Dashboard" en el header
+- **Cualquier vista** → Cerrar sesión: Botón "Cerrar Sesión" en el header
 
 ## 🎨 Personalización
 
@@ -253,8 +322,13 @@ npm run preview
 - No se pueden eliminar docentes que estén asignados a cursos (primero desasignar o eliminar el curso)
 - Al eliminar un módulo, se eliminan también todas sus lecciones
 - La aplicación utiliza Web Components para una arquitectura modular
-- El administrador puede gestionar cursos, docentes, módulos y lecciones desde la vista Admin
+- El administrador puede gestionar cursos, docentes, módulos, lecciones y credenciales desde la vista Admin
 - Los módulos se gestionan desde el botón "MODULOS" en la tabla de cursos
+- Después del login, todos los usuarios son redirigidos al Dashboard
+- El Dashboard es la vista principal y punto de entrada después de la autenticación
+- Las rutas están protegidas: se requiere token de autenticación para acceder a Dashboard y Admin
+- La vista de curso utiliza rutas dinámicas (ej: `#/curso/1`) para navegación directa
+- Los módulos en la vista de curso se pueden expandir/colapsar individualmente
 
 ## 📄 Licencia
 

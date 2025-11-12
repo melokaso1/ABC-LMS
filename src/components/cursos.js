@@ -17,25 +17,11 @@ class CursosComponent extends HTMLElement {
         const cursoCards = this.querySelectorAll('.curso-card');
         cursoCards.forEach((card, index) => {
             card.addEventListener('click', () => {
-                this.openModal(this.appData.cursos[index]);
+                const curso = this.appData.cursos[index];
+                // Navegar a la vista del curso en lugar de abrir modal
+                window.location.hash = `#/curso/${curso.id}`;
             });
         });
-    }
-    
-    openModal(curso) {
-        // Buscar o crear el modal
-        let modal = document.querySelector('modal-component');
-        if (!modal) {
-            modal = document.createElement('modal-component');
-            document.body.appendChild(modal);
-        }
-        
-        // Buscar información del docente
-        const docente = this.appData.docentes?.find(d => d.email === curso.docente);
-        
-        // Establecer contenido y abrir
-        modal.setContent(curso, docente);
-        modal.open();
     }
 
     render() {

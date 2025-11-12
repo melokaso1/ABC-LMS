@@ -3,6 +3,7 @@ import '../views/loginView.js';
 import '../views/dashboardView.js';
 import '../views/adminView.js';
 import '../views/publicView.js';
+import '../views/cursoView.js';
 
 // Rutas disponibles
 const routes = {
@@ -11,6 +12,14 @@ const routes = {
     '/admin': 'admin-view',
     '/public': 'public-view',
 };
+
+// Rutas dinámicas (con parámetros)
+const dynamicRoutes = [
+    {
+        pattern: /^\/curso\/(.+)$/,
+        element: 'curso-view'
+    }
+];
 
 // Rutas que requieren login
 const protectedRoutes = [
@@ -25,6 +34,14 @@ class Router {
     handleRoute() {
         // Verificar rutas protegidas primero
         const route = window.location.hash.slice(1) || '/public';
+        
+        // Verificar rutas dinámicas primero
+        for (const dynamicRoute of dynamicRoutes) {
+            const match = route.match(dynamicRoute.pattern);
+            if (match) {
+                return dynamicRoute.element;
+            }
+        }
         
         if (protectedRoutes.includes(route)) {
             const token = localStorage.getItem('token');

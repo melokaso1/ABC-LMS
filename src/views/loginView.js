@@ -50,12 +50,8 @@ class LoginView extends HTMLElement {
                 localStorage.setItem('token', token);
                 saveData('current-user', user);
                 
-                // Redirigir según el rol usando window.location.hash
-                if (user.rol === 'administrativo' || user.rol === 'admin') {
-                    window.location.hash = '#/admin';
-                } else {
-                    window.location.hash = '#/dashboard';
-                }
+                // Redirigir a dashboard por defecto (todos los usuarios van a dashboard primero)
+                window.location.hash = '#/dashboard';
                 
                 // Forzar re-renderizado
                 renderRouter();
