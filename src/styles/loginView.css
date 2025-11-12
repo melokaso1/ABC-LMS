@@ -40,7 +40,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 .login-header,
@@ -284,4 +284,3 @@
     transform: none;
     box-shadow: var(--shadow-md);
 }
-

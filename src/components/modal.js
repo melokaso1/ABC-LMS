@@ -52,6 +52,61 @@ class ModalComponent extends HTMLElement {
                 this.close();
             }
         });
+
+        // Scroll automático cuando se abren los módulos
+        this.setupModulosToggle();
+    }
+
+    setupModulosToggle() {
+        const toggleBtn = this.querySelector('.toggle-modulos');
+        const modulosContent = this.querySelector('.modulos-content');
+        const modalContent = this.querySelector('.modal-content');
+        
+        if (toggleBtn && modulosContent) {
+            toggleBtn.addEventListener('click', () => {
+                // Toggle de clases
+                toggleBtn.classList.toggle('active');
+                const isOpening = !modulosContent.classList.contains('show');
+                modulosContent.classList.toggle('show');
+                
+                // Si se está abriendo, hacer scroll después de la animación
+                if (isOpening) {
+                    // Esperar a que la animación de expansión progrese
+                    setTimeout(() => {
+                        this.scrollToModulos(modulosContent, modalContent);
+                    }, 150);
+                    
+                    // También hacer scroll después de que termine completamente la animación
+                    setTimeout(() => {
+                        this.scrollToModulos(modulosContent, modalContent);
+                    }, 400);
+                }
+            });
+        }
+    }
+
+    scrollToModulos(modulosContent, modalContent) {
+        if (!modulosContent || !modalContent) return;
+
+        // Obtener la posición del contenido de módulos
+        const modulosRect = modulosContent.getBoundingClientRect();
+        const modalRect = modalContent.getBoundingClientRect();
+        const viewportHeight = window.innerHeight;
+
+        // Calcular la posición para centrar el contenido
+        const modulosTop = modulosContent.offsetTop;
+        const modulosHeight = modulosContent.offsetHeight;
+        const modalScrollTop = modalContent.scrollTop;
+        const modalHeight = modalContent.clientHeight;
+
+        // Calcular el scroll necesario para centrar el contenido
+        const targetScroll = modulosTop - (modalHeight / 2) + (modulosHeight / 2);
+
+        // Hacer scroll suave al contenido
+        modalContent.scrollTo({
+            top: Math.max(0, targetScroll - 20), // Restar un poco para mejor visualización
+            behavior: 'smooth'
+        });
     }
     
     open() {
@@ -225,7 +280,7 @@ class ModalComponent extends HTMLElement {
                     </ul>
                 </div>
                 <div class="modal-section">
-                    <button class="toggle-modulos" onclick="this.classList.toggle('active'); this.nextElementSibling.classList.toggle('show')">
+                    <button class="toggle-modulos" data-toggle-modulos>
                         <span>Módulos y Lecciones</span>
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <polyline points="6 9 12 15 18 9"></polyline>
@@ -243,6 +298,7 @@ class ModalComponent extends HTMLElement {
         `;
         
         // Re-setup event listeners después de cambiar el contenido
+        // Nota: setupEventListeners ya incluye setupModulosToggle
         this.setupEventListeners();
         // Configurar el carrusel
         this.setupCarousel();

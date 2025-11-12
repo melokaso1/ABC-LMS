@@ -33,16 +33,24 @@ login-view {
 }
 
 /* Estilos base para otras vistas */
-.dashboard-view,
-.admin-view {
+.dashboard-view {
     padding: var(--spacing-lg);
     max-width: 1200px;
     margin: 0 auto;
 }
 
-.dashboard-view h1,
-.admin-view h1 {
+.dashboard-view h1 {
     margin-bottom: var(--spacing-md);
     color: var(--color-text-primary);
+}
+
+/* Admin view ocupa toda la pantalla */
+admin-view {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
 }
 

@@ -1,5 +1,8 @@
-import { initializeData, loadData } from '../utils/storage.js';
+import { initializeData, loadData, saveData } from '../utils/storage.js';
+import { router } from '../utils/router.js';
+import { renderRouter } from '../app.js';
 import '../styles/loginView.css';
+import generateToken from '../auth/gentoken.js';
 
 
 class LoginView extends HTMLElement {
@@ -8,7 +11,63 @@ class LoginView extends HTMLElement {
     }
     connectedCallback() {
         this.render();
+        this.validate();
     }
+    validate(){
+        const form = this.querySelector('#loginForm');
+        if (!form) return;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const data = loadData();
+            const username = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Limpiar mensaje de error anterior
+            if (errorMessage) {
+                errorMessage.textContent = '';
+                errorMessage.style.display = 'none';
+            }
+
+            // Validar que existan credenciales
+            if (!data || !data.credenciales || data.credenciales.length === 0) {
+                if (errorMessage) {
+                    errorMessage.textContent = 'No hay usuarios registrados en el sistema';
+                    errorMessage.style.display = 'block';
+                }
+                return;
+            }
+
+            // Buscar usuario
+            const user = data.credenciales.find(u => u.email === username && u.password === password);
+
+            if (user) {
+                // Generar token y guardar sesión
+                const token = generateToken();
+                // Guardar con la clave 'token' que el router espera
+                localStorage.setItem('token', token);
+                saveData('current-user', user);
+                
+                // Redirigir según el rol usando window.location.hash
+                if (user.rol === 'administrativo' || user.rol === 'admin') {
+                    window.location.hash = '#/admin';
+                } else {
+                    window.location.hash = '#/dashboard';
+                }
+                
+                // Forzar re-renderizado
+                renderRouter();
+            } else {
+                if (errorMessage) {
+                    errorMessage.textContent = 'Credenciales incorrectas. Por favor, intenta de nuevo.';
+                    errorMessage.style.display = 'block';
+                }
+            }
+        });
+    }
+
     render() {
         this.innerHTML = `
         <div class="login-container">
